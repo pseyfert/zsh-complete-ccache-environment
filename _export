@@ -1,0 +1,88 @@
+#compdef export
+
+# Copyright (c) 2018, CERN for the benefit of the LHCb collaboration
+# Author: Paul Seyfert <pseyfert@cern.ch>
+#
+# All rights reserved.
+#
+# Redistribution and use in source and binary forms, with or without
+# modification, are permitted provided that the following conditions are met:
+#     * Redistributions of source code must retain the above copyright
+#       notice, this list of conditions and the following disclaimer.
+#     * Redistributions in binary form must reproduce the above copyright
+#       notice, this list of conditions and the following disclaimer in the
+#       documentation and/or other materials provided with the distribution.
+#     * Neither the name of the <organization> nor the
+#       names of its contributors may be used to endorse or promote products
+#       derived from this software without specific prior written permission.
+#
+# THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
+# ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED
+# WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+# DISCLAIMED. IN NO EVENT SHALL <COPYRIGHT HOLDER> BE LIABLE FOR ANY
+# DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+# (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+# LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+# ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+# (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+# SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+#
+# In applying this licence, CERN does not waive the privileges and immunities
+# granted to it by virtue of its status as an Intergovernmental Organization
+# or submit itself to any jurisdiction.
+
+## suggest CCACHE on `export <TAB>'
+#
+# * but really only suggest two CCACHE entries not to sp9am the entire screen
+# * using two rather than one, such that `export CCAC<TAB>` does not jump to
+#   `export CCACHE ` with trailing space and defeat the rest of this file.
+
+local -a tmp
+tmp=()
+if zstyle -a ":completion:complete:export:argument-rest:" fake-parameters tmp ; then
+  zstyle ':completion::complete:export:argument-rest:' fake-parameters ${tmp[@]} CCACHE_\* CCACHE_\?
+else
+  zstyle ':completion::complete:export:argument-rest:' fake-parameters CCACHE_\* CCACHE_\?
+fi
+
+## check if CCACHE gets completed, otherwise use the "normal" export completion
+
+if [[ $words[$CURRENT] != CCACHE* ]] ; then
+  _typeset "$@"
+else
+  local -a ccachevars
+  ccachevars=(
+    "CCACHE_BASEDIR:relative to which top level paths are hashed"
+    "CCACHE_DIR:where the cache and config are kept"
+    "CCACHE_TEMPDIR:where temporary files are kept"
+    "CCACHE_NLEVELS:directory levels in the cache directory"
+    "CCACHE_CC:specify compiler"
+    "CCACHE_COMPILERCHECK:compiler information included in the hash"
+    # "CCACHE_*COMPRESS:"
+    "CCACHE_COMPRESSLEVEL:cache compression level"
+    "CCACHE_EXTENSION:set extensions for intermediate files"
+    # "CCACHE_*DIRECT:"
+    # "CCACHE_*DISABLE:"
+    "CCACHE_EXTRAFILES:additional files to consider in hashing"
+    # "CCACHE_*HARDLINK:"
+    # "CCACHE_*HASHDIR:"
+    "CCACHE_IGNOREHEADERS:set paths to headers to ignore in hashing"
+    # "CCACHE_*COMMENTS:"
+    "CCACHE_LIMIT_MULTIPLE:cleanup level"
+    "CCACHE_LOGFILE:specify a log file"
+    "CCACHE_MAXFILES:maximum number of files in the cache"
+    "CCACHE_MAXSIZE:maximum size of the cache"
+    "CCACHE_PATH:path to the ccache directory"
+    "CCACHE_PREFIX:prefixes for compiler invokation"
+    "CCACHE_PREFIX_CPP:prefixes for preprocessor invokation"
+    # "CCACHE_*READONLY:"
+    # "CCACHE_*READONLY_DIRECT:"
+    # "CCACHE_*RECACHE:"
+    # "CCACHE_*CPP2:"
+    "CCACHE_SLOPPINESS:hash files sloppy"
+    # "CCACHE_*STATS:"
+    "CCACHE_UMASK:set umask for ccache and child processes (e.g. for sharing cache)"
+    # "CCACHE_*UNIFY:"
+    )
+    _describe -t ccachevars "ccache variables" ccachevars
+fi
