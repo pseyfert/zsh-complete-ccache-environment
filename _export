@@ -39,7 +39,7 @@
 
 local -a tmp
 tmp=()
-if zstyle -a ":completion:complete:export:argument-rest:" fake-parameters tmp ; then
+if zstyle -a ":completion::complete:export:argument-rest:" fake-parameters tmp ; then
   zstyle ':completion::complete:export:argument-rest:' fake-parameters ${tmp[@]} CCACHE_\* CCACHE_\?
 else
   zstyle ':completion::complete:export:argument-rest:' fake-parameters CCACHE_\* CCACHE_\?
