@@ -47,42 +47,40 @@ fi
 
 ## check if CCACHE gets completed, otherwise use the "normal" export completion
 
-if [[ $words[$CURRENT] != CCACHE* ]] ; then
+if [[ ( $words[$CURRENT] != CCACHE* ) || ( $words[$CURRENT] = *\=* ) ]] ; then
   _typeset "$@"
 else
-  local -a ccachevars
-  ccachevars=(
-    "CCACHE_BASEDIR:relative to which top level paths are hashed"
-    "CCACHE_DIR:where the cache and config are kept"
-    "CCACHE_TEMPDIR:where temporary files are kept"
-    "CCACHE_NLEVELS:directory levels in the cache directory"
-    "CCACHE_CC:specify compiler"
-    "CCACHE_COMPILERCHECK:compiler information included in the hash"
-    # "CCACHE_*COMPRESS:"
-    "CCACHE_COMPRESSLEVEL:cache compression level"
-    "CCACHE_EXTENSION:set extensions for intermediate files"
-    # "CCACHE_*DIRECT:"
-    # "CCACHE_*DISABLE:"
-    "CCACHE_EXTRAFILES:additional files to consider in hashing"
-    # "CCACHE_*HARDLINK:"
-    # "CCACHE_*HASHDIR:"
-    "CCACHE_IGNOREHEADERS:set paths to headers to ignore in hashing"
-    # "CCACHE_*COMMENTS:"
-    "CCACHE_LIMIT_MULTIPLE:cleanup level"
-    "CCACHE_LOGFILE:specify a log file"
-    "CCACHE_MAXFILES:maximum number of files in the cache"
-    "CCACHE_MAXSIZE:maximum size of the cache"
-    "CCACHE_PATH:path to the ccache directory"
-    "CCACHE_PREFIX:prefixes for compiler invokation"
-    "CCACHE_PREFIX_CPP:prefixes for preprocessor invokation"
-    # "CCACHE_*READONLY:"
-    # "CCACHE_*READONLY_DIRECT:"
-    # "CCACHE_*RECACHE:"
-    # "CCACHE_*CPP2:"
-    "CCACHE_SLOPPINESS:hash files sloppy"
-    # "CCACHE_*STATS:"
-    "CCACHE_UMASK:set umask for ccache and child processes (e.g. for sharing cache)"
-    # "CCACHE_*UNIFY:"
-    )
-    _describe -t ccachevars "ccache variables" ccachevars
+  _values 'ccache environment variables' \
+    "CCACHE_BASEDIR[relative to which top level paths are hashed]: :" \
+    "CCACHE_DIR[where the cache and config are kept]: :" \
+    "CCACHE_TEMPDIR[where temporary files are kept]: :" \
+    "CCACHE_NLEVELS[directory levels in the cache directory]: :" \
+    "CCACHE_CC[specify compiler]: :" \
+    "CCACHE_COMPILERCHECK[compiler information included in the hash]: :" \
+    "CCACHE_COMPRESSLEVEL[cache compression level]: :" \
+    "CCACHE_EXTENSION[set extensions for intermediate files]: :" \
+    "CCACHE_EXTRAFILES[additional files to consider in hashing]: :" \
+    "CCACHE_IGNOREHEADERS[set paths to headers to ignore in hashing]: :" \
+    "CCACHE_LIMIT_MULTIPLE[cleanup level]: :" \
+    "CCACHE_LOGFILE[specify a log file]: :" \
+    "CCACHE_MAXFILES[maximum number of files in the cache]: :" \
+    "CCACHE_MAXSIZE[maximum size of the cache]: :" \
+    "CCACHE_PATH[path to the ccache directory]: :" \
+    "CCACHE_PREFIX[prefixes for compiler invokation]: :" \
+    "CCACHE_PREFIX_CPP[prefixes for preprocessor invokation]: :" \
+    "CCACHE_SLOPPINESS[hash files sloppy]: :" \
+    "CCACHE_UMASK[set umask for ccache and child processes (e.g. for sharing cache)]: :"
+
+    # "CCACHE_*COMMENTS[]: :" \
+    # "CCACHE_*STATS[]: :" \
+    # "CCACHE_*READONLY[]: :" \
+    # "CCACHE_*READONLY_DIRECT[]: :" \
+    # "CCACHE_*RECACHE[]: :" \
+    # "CCACHE_*CPP2[]: :" \
+    # "CCACHE_*UNIFY[]: :" \
+    # "CCACHE_*COMPRESS[]: :" \
+    # "CCACHE_*DIRECT[]: :" \
+    # "CCACHE_*DISABLE[]: :" \
+    # "CCACHE_*HARDLINK[]: :" \
+    # "CCACHE_*HASHDIR[]: :" \
 fi
